@@ -40,8 +40,11 @@ class _MyAppState extends State<MyApp> {
               .then(
         (list) async => list ?? [await getApplicationDocumentsDirectory()],
       );
+    } else if (Platform.isWindows) {
+      // Query disk space from C: to F: (should cover most people's drives for demo purposes)
+      directories = [0, 1, 2, 3].map((idx) => Directory("${String.fromCharCode(0x43 + idx)}:\\")).toList();
     } else {
-      return [];
+      directories = [];
     }
 
     for (var directory in directories) {
